@@ -1,0 +1,36 @@
+.row {
+  margin: 20px;
+  display:flex;
+  justify-content:left;
+  padding-right:100px;
+  flex-wrap:wrap;
+}
+
+.row-posters {
+  display: flex;
+  overflow-x: scroll;
+  padding-top: 20px;
+}
+
+.row-posters::-webkit-scrollbar {
+  display: none;
+}
+
+.poster {
+  width: 150px;
+  margin-right: 10px;
+  border-radius: 6px;
+  transition: transform 0.3s;
+}
+
+.poster:hover {
+  transform: scale(1.1);
+}
+
+img {
+  width: 140px;
+  height: 210px;
+  object-fit: cover;
+  border-radius: 12px;
+  background-color: #222; /* avoids white flash */
+}
