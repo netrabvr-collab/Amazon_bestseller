@@ -4,6 +4,7 @@ from sklearn.decomposition import TruncatedSVD
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from add_covers import get_google_cover
+from rapidfuzz import process
 
 # =========================
 # LOAD DATA
@@ -97,8 +98,14 @@ indices = pd.Series(content_data.index, index=content_data["title"]).drop_duplic
 def hybrid_recommend(book_name):
 
     if book_name not in books_list:
-        print("Book not found")
-        return []
+        corrected = find_closest_title(book_name)
+
+        if corrected:
+            print(f"Using closest match:{corrected}")
+            book_name = corrected
+        else:
+            print("Book not found")
+            return []
 
     book_index = books_list.index(book_name)
     corr_score = corr_matrix[book_index]
@@ -190,9 +197,22 @@ def get_top_rated(n=20):
 
     return results
 
-titles = books["title"].dropna().unique()
-print(titles)
-pd.Series(titles).to_csv("data/all_titles.csv", index=False)
 # =========================
-# RUN
+# SEE ALL BOOK TITLES
 # =======================
+
+def book_titles():
+    
+    titles = books_list   
+    pd.Series(titles).to_csv("data/all_titles.csv", index=False)
+    return titles
+
+# =========================
+# CLOSEST NAME
+# =======================
+def find_closest_title(user_input):
+    match,score,_ = process.extractOne(user_input.lower(),[title.lower() for title in books_list])
+
+    if score>60:
+        return match
+    return None
