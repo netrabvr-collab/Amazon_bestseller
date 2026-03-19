@@ -5,7 +5,9 @@ body {
   font-family: Arial, sans-serif;
 }
 
-title{
-  display: flex;
-  justify-content:left;
+
+
+.app {
+  padding-top: 100px;
+  background-color: #111;
 }

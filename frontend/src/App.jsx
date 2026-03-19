@@ -13,20 +13,26 @@ function App() {
   });
 
   useEffect(() => {
-    fetch(`${API}/recommend?book=The Witches`)
+  fetch(`${API}/recommend?book=${encodeURIComponent("The Witches")}`)
     .then(res => res.json())
-    .then(data =>setData(data));
-  },[]);
-
+    .then(data => setData(data));
+}, []);
   const bannerBook = data.recommended[0];
 
   const filteredBooks = data.recommended.filter(
     (book) => book.book_id !== bannerBook?.book_id
   );
 
+  const handleSearch = (title) => {
+  fetch(`${API}/recommend?book=${encodeURIComponent(title)}`)
+    .then(res => res.json())
+    .then(data => setData(data));
+  };
+
   return (
     <div className="app">
-      <Navbar/>
+
+      <Navbar onSearch={handleSearch}/>
       <Banner book={bannerBook || {}}/>
 
       <Row title="Recommended for You" books={filteredBooks}/>
