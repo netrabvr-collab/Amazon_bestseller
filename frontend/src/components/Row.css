@@ -1,47 +1,296 @@
+/* ─── ROW ─────────────────────────────────────────────── */
 .row {
-  margin-top: 30px;
-  padding-left: 30px;
+  margin-top: 52px;
+  position: relative;
+  font-size:30px;
+}
+
+/* ─── HEADER ──────────────────────────────────────────── */
+.row-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 18px;
 }
 
 .row h2 {
-  margin-bottom: 10px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 30px;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: 0.2px;
+  color: var(--text);
+  padding-left: 0;
 }
 
+/* Soft rose dot accent before heading */
+.row h2::before {
+  content: "✦ ";
+  font-style: normal;
+  font-size: 9px;
+  color: var(--rose);
+  vertical-align: middle;
+  margin-right: 6px;
+  opacity: 0.7;
+}
+
+/* "See all" */
+.row-see-all {
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.25s ease;
+  flex-shrink: 0;
+}
+
+.row-see-all:hover { color: var(--rose-soft); }
+
+/* ─── SCROLL TRACK ────────────────────────────────────── */
 .row-posters {
   display: flex;
-  overflow-x: scroll;
-  gap: 12px;
+  overflow-x: auto;
+  overflow-y: visible;
+  gap: 14px;
+  padding-bottom: 20px;
+  padding-top: 6px;
 
-  scrollbar-width:none;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  /* Soft edge fade */
+  -webkit-mask-image: linear-gradient(to right,
+    transparent 0%,
+    black 2.5%,
+    black 95%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(to right,
+    transparent 0%,
+    black 2.5%,
+    black 95%,
+    transparent 100%
+  );
 }
 
+.row-posters::-webkit-scrollbar { display: none; }
+
+/* ─── CARD ────────────────────────────────────────────── */
 .poster-container {
-  transition: transform 0.3s ease;
+  position: relative;
+  flex-shrink: 0;
+  cursor: pointer;
+
+  opacity: 0;
+  transform: translateY(14px);
+  animation: cardRise 0.55s var(--ease-silk) forwards;
 }
 
+/* Stagger */
+.poster-container:nth-child(1)   { animation-delay: 0.04s; }
+.poster-container:nth-child(2)   { animation-delay: 0.09s; }
+.poster-container:nth-child(3)   { animation-delay: 0.14s; }
+.poster-container:nth-child(4)   { animation-delay: 0.19s; }
+.poster-container:nth-child(5)   { animation-delay: 0.24s; }
+.poster-container:nth-child(6)   { animation-delay: 0.29s; }
+.poster-container:nth-child(7)   { animation-delay: 0.34s; }
+.poster-container:nth-child(n+8) { animation-delay: 0.38s; }
+
+@keyframes cardRise {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── IMAGE ───────────────────────────────────────────── */
 .poster-container img {
-  height: 180px;
-  border-radius: 10px;
+  height: 215px;
+  width: auto;
+  display: block;
+  border-radius: 14px;
+  object-fit: cover;
+
+  border: 1px solid rgba(255, 220, 230, 0.07);
+
+  /* Slight warm tint to match palette */
+  filter: saturate(0.9) brightness(0.92);
+
+  transition:
+    filter     0.4s ease,
+    box-shadow 0.4s ease,
+    transform  0.4s var(--ease-silk),
+    border-color 0.4s ease;
 }
 
-.poster-container:hover {
-  transform: scale(1.12);
-  z-index: 10;
+/* ─── TITLE ───────────────────────────────────────────── */
+.poster-title {
+  font-family: 'Figtree', sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-top: 9px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 144px;
+  letter-spacing: 0.1px;
+  transition: opacity 0.3s ease;
 }
+
+/* ─── HOVER ───────────────────────────────────────────── */
+.poster-container:hover { z-index: 20; }
 
 .poster-container:hover img {
-  box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+  transform: scale(1.07) translateY(-8px);
+  filter: saturate(0.7) brightness(0.4);
+  box-shadow:
+    0 24px 50px rgba(0, 0, 0, 0.8),
+    0 0 0 1px rgba(201, 116, 143, 0.2),
+    0 0 30px rgba(201, 116, 143, 0.1);
+  border-color: rgba(201, 116, 143, 0.2);
 }
 
-.poster-container {
+.poster-container:hover .poster-title { opacity: 0; }
+
+/* ─── HOVER OVERLAY ───────────────────────────────────── */
+.hover-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 215px;
+  border-radius: 14px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 14px 13px;
+
+  /* Warm rose-tinted gradient */
+  background: linear-gradient(
+    to top,
+    rgba(20, 8, 20, 0.97) 0%,
+    rgba(30, 10, 28, 0.75) 35%,
+    rgba(40, 15, 35, 0.3)  60%,
+    transparent            100%
+  );
+
   opacity: 0;
-  transform: translateY(20px);
-  animation: fadeIn 0.5s ease forwards;
+  transform: translateY(5px);
+  transition:
+    opacity   0.35s ease,
+    transform 0.35s var(--ease-silk);
+  pointer-events: none;
 }
 
-@keyframes fadeIn {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.poster-container:hover .hover-content {
+  opacity: 1;
+  transform: translateY(-8px); /* tracks image */
 }
+
+/* Hover title */
+.hover-content .hover-title {
+  font-family: 'Figtree', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Hover meta */
+.hover-content .hover-meta {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10.5px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.hover-content .hover-meta .dot {
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: rgba(201, 116, 143, 0.4);
+}
+
+.hover-content p {
+  font-size: 11px;
+  color: rgba(245, 235, 245, 0.45);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ─── MINI ACTION ROW ─────────────────────────────────── */
+.hover-actions {
+  display: flex;
+  gap: 7px;
+  margin-top: 9px;
+}
+
+.hover-play-btn,
+.hover-add-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  flex-shrink: 0;
+  pointer-events: all;
+  transition: transform 0.25s var(--ease-dreamy), box-shadow 0.25s ease;
+}
+
+.hover-play-btn {
+  background: linear-gradient(135deg, #d4809a, #b5607a);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(180, 80, 110, 0.4);
+}
+
+.hover-play-btn:hover {
+  transform: scale(1.14);
+  box-shadow: 0 6px 20px rgba(180, 80, 110, 0.6);
+}
+
+.hover-add-btn {
+  background: rgba(255, 245, 250, 0.07);
+  color: var(--text-muted);
+  border: 1px solid rgba(255, 220, 230, 0.15) !important;
+}
+
+.hover-add-btn:hover {
+  transform: scale(1.12);
+  color: var(--text);
+  border-color: rgba(201, 116, 143, 0.4) !important;
+}
+
+/* ─── SHIMMER SHEEN ───────────────────────────────────── */
+.poster-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 215px;
+  border-radius: 14px;
+
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.06) 0%,
+    transparent               45%,
+    rgba(255, 220, 230, 0.04) 100%
+  );
+
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+
+.poster-container:hover::after { opacity: 1; }

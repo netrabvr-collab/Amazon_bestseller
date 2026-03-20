@@ -1,13 +1,104 @@
-body {
-  margin: 0;
-  background-color: #111;
-  color: white;
-  font-family: Arial, sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Figtree:wght@300;400;500;600&display=swap');
+
+/* ─── DESIGN TOKENS ───────────────────────────────────── */
+:root {
+  --rose:          #c9748f;
+  --rose-soft:     #e8a8bc;
+  --rose-dim:      rgba(201, 116, 143, 0.15);
+  --rose-glow:     rgba(201, 116, 143, 0.28);
+  --gold:          #c9a96e;
+  --gold-dim:      rgba(201, 169, 110, 0.12);
+  --lavender-text: #b8a9d4;
+
+  --bg:            #0e0a10;
+  --surface:       rgba(255, 245, 250, 0.04);
+  --surface-hover: rgba(255, 245, 250, 0.07);
+  --border:        rgba(255, 220, 230, 0.08);
+  --border-hover:  rgba(255, 220, 230, 0.2);
+
+  --text:          #f5eff5;
+  --text-muted:    rgba(245, 235, 245, 0.42);
+  --text-soft:     rgba(245, 235, 245, 0.65);
+
+  --ease-silk:     cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-dreamy:   cubic-bezier(0.34, 1.4, 0.64, 1);
 }
 
+/* ─── RESET ───────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
+html { scroll-behavior: smooth; }
 
+body {
+  font-family: 'Figtree', sans-serif;
+  font-weight: 300;
+  color: var(--text);
+  background-color: var(--bg);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── ATMOSPHERE ──────────────────────────────────────── */
+
+/* Deep plum-midnight layered base */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 65% 45% at 12% 8%,   rgba(140, 55, 95, 0.16) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 65% at 88% 92%,  rgba(80, 35, 115, 0.2)  0%, transparent 55%),
+    linear-gradient(155deg, #130a18 0%, #0e0a10 40%, #0b080e 100%);
+  z-index: -3;
+}
+
+/* Drifting warm rose orb */
+body::after {
+  content: "";
+  position: fixed;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(201, 116, 143, 0.10) 0%,
+    rgba(180, 90, 130, 0.04) 45%,
+    transparent 70%
+  );
+  filter: blur(55px);
+  animation: roseDrift 32s ease-in-out infinite alternate;
+  z-index: -2;
+  pointer-events: none;
+}
+
+@keyframes roseDrift {
+  0%   { transform: translate(-8vw, -8vh) scale(1); }
+  40%  { transform: translate(35vw, 15vh) scale(1.2); }
+  100% { transform: translate(65vw, 55vh) scale(0.9); }
+}
+
+/* ─── LAYOUT ──────────────────────────────────────────── */
 .app {
-  padding-top: 100px;
-  background-color: #111;
+  padding-top: 88px;
+  padding-left: 56px;
+  padding-right: 56px;
+  padding-bottom: 100px;
+}
+
+@media (max-width: 768px) {
+  .app { padding-left: 20px; padding-right: 20px; }
+}
+
+/* ─── SCROLLBAR ───────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(201, 116, 143, 0.22);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(201, 116, 143, 0.45);
 }

@@ -21,6 +21,11 @@ function Row({ title, books }) {
               }}
             />
             <p className="poster-title">{book.title}</p>
+            <div className="hover-content">
+              <p>Title:{book.title}</p>
+              <p>Author:{book.author}</p>
+              <p>Rating:{"⭐".repeat(Math.round(book.rating))}</p>
+            </div>
           </div>
         ))}
       </div>

@@ -1,54 +1,242 @@
+/* ─── BANNER WRAPPER ──────────────────────────────────── */
 .banner {
   position: relative;
-  height: 450px;
+  height: 600px;
+
+  /* Soft rounded card — not a harsh full-bleed */
+  border-radius: 24px;
+  overflow: hidden;
 
   display: flex;
   align-items: flex-end;
 
-  padding: 60px;
-  color: white;
+  border: 1px solid rgba(255, 220, 230, 0.07);
+
+  box-shadow:
+    0 0 0 1px rgba(201, 116, 143, 0.06),
+    0 40px 80px rgba(0, 0, 0, 0.55),
+    0 0 80px rgba(100, 30, 60, 0.12);
 }
 
+/* ─── IMAGE ───────────────────────────────────────────── */
+.banner img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+  /* Desaturate + cool/warm blend */
+  filter: saturate(0.75) brightness(0.8) sepia(0.12);
+
+  animation: gentleZoom 20s ease-in-out infinite alternate;
+  transform-origin: center 40%;
+}
+
+@keyframes gentleZoom {
+  from { transform: scale(1); }
+  to   { transform: scale(1.05); }
+}
+
+/* ─── OVERLAYS ────────────────────────────────────────── */
+
+/* Primary bottom-to-top fade */
 .banner::after {
   content: "";
   position: absolute;
   inset: 0;
-
   background: linear-gradient(
     to top,
-    rgba(0,0,0,0.9),
-    rgba(0,0,0,0.3),
-    transparent
+    rgba(12, 7, 16, 1)    0%,
+    rgba(12, 7, 16, 0.92) 18%,
+    rgba(12, 7, 16, 0.55) 45%,
+    rgba(12, 7, 16, 0.15) 70%,
+    transparent           100%
   );
+  z-index: 1;
 }
 
+/* Left vignette — keeps text crisp */
+.banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(12, 7, 16, 0.8) 0%,
+    rgba(12, 7, 16, 0.3) 40%,
+    transparent          65%
+  );
+  z-index: 1;
+}
+
+/* ─── CONTENT ─────────────────────────────────────────── */
 .banner-content {
   position: relative;
-  z-index: 1;
-  max-width: 600px;
+  z-index: 2;
+  padding: 0 56px 56px;
+  max-width: 680px;
+
+  animation: bannerWaft 1s var(--ease-silk) both;
 }
 
-.banner h1 {
-  font-size: 42px;
-  line-height: 1.2;   /* prevents overlap between lines */
-  margin-bottom: 10px;
+@keyframes bannerWaft {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
+/* Mood / genre label */
+.banner-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Figtree', sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--rose-soft);
+  margin-bottom: 16px;
+  opacity: 0.85;
+}
+
+.banner-tag::before {
+  content: "";
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--rose), transparent);
+}
+
+/* Title — big editorial serif */
 .banner h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 64px;
+  font-weight: 600;
+  font-style: italic;
+  line-height: 1.05;
+  letter-spacing: -1px;
+  color: var(--text);
+  margin-bottom: 18px;
+
+  text-shadow:
+    0 2px 20px rgba(0, 0, 0, 0.7),
+    0 0 60px rgba(201, 116, 143, 0.08);
+}
+
+/* Meta row */
+.banner-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+  letter-spacing: 0.3px;
+}
+
+.banner-meta .dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(201, 116, 143, 0.4);
+  flex-shrink: 0;
+}
+
+.banner-meta .rating {
+  color: var(--gold);
+  font-weight: 500;
+}
+
+/* Description */
+.banner p {
+  font-family: 'Figtree', sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.75;
+  color: var(--text-soft);
+  margin-bottom: 30px;
+
   display: -webkit-box;
-  -webkit-line-clamp: 2;  
-  line-clamp :2; 
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
-
-  font-size: 42px;
-  line-height: 1.2;
 }
 
-.banner h1 {
-  text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+/* ─── BUTTONS ─────────────────────────────────────────── */
+.banner-buttons {
+  display: flex;
+  gap: 12px;
+  align-items: center;
 }
-.banner p {
-  font-size: 14px;
-  opacity: 0.8;
+
+.banner-buttons button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border-radius: 999px;         /* pill shape */
+  border: none;
+  font-family: 'Figtree', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition:
+    transform    0.3s var(--ease-dreamy),
+    box-shadow   0.3s ease,
+    background   0.25s ease,
+    filter       0.25s ease;
+}
+
+.banner-buttons button:hover  { transform: translateY(-2px) scale(1.04); }
+.banner-buttons button:active { transform: scale(0.97); }
+
+/* Play — rose-to-mauve gradient pill */
+.play-btn {
+  background: linear-gradient(135deg, #d4809a, #b5607a);
+  color: #fff;
+  box-shadow:
+    0 8px 28px rgba(180, 80, 110, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.play-btn:hover {
+  background: linear-gradient(135deg, #de8fa8, #c06e88);
+  box-shadow:
+    0 14px 38px rgba(180, 80, 110, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  filter: brightness(1.06);
+}
+
+/* Info — frosted pill */
+.info-btn {
+  background: rgba(255, 245, 250, 0.07);
+  color: var(--text);
+  border: 1px solid rgba(255, 220, 230, 0.14);
+  backdrop-filter: blur(10px);
+}
+
+.info-btn:hover {
+  background: rgba(255, 245, 250, 0.12);
+  border-color: rgba(255, 220, 230, 0.28);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+/* ─── AMBIENT GLOW behind content (soft rose bloom) ──── */
+.banner-glow {
+  position: absolute;
+  bottom: -60px;
+  left: 40px;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(201, 116, 143, 0.14) 0%,
+    transparent 70%
+  );
+  filter: blur(40px);
+  z-index: 1;
+  pointer-events: none;
 }
