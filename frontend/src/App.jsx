@@ -13,8 +13,27 @@ function App() {
   });
 
   const [randomBooks, setRandomBooks] = useState([]);
+  const [favorites, setFavorites] = useState(() => {
+    return JSON.parse(localStorage.getItem("favorites")) || [];
+  });
 
-  // 🔥 Fetch everything (reusable)
+  useEffect(() => {
+    localStorage.setItem("favorites",JSON.stringify(favorites));
+  },[favorites]);
+
+  const toggleFavorite = (book) => {
+    setFavorites(prev => {
+      const exists = prev.find(b => b.book_id === book.book_id);
+      
+      if(exists) {
+        return prev.filter(b => b.book_id !== book.book_id);
+      }
+      else {
+        return [...prev,book];
+      }
+    });
+  };
+  
   const fetchAll = (title = "") => {
   const url = title
     ? `${API}/recommend?book=${encodeURIComponent(title)}`
@@ -78,10 +97,11 @@ function App() {
   recommended.forEach(book => {
     if (!book.reason) return;
 
-    book.reason.forEach(tag => {
-      if (!tagMap[tag]) {
-        tagMap[tag] = [];
-      }
+    // split string by comma to make array
+    const tags = book.reason.split(",").map(tag => tag.trim());
+
+    tags.forEach(tag => {
+      if (!tagMap[tag]) tagMap[tag] = [];
       tagMap[tag].push(book);
     });
   });
@@ -89,7 +109,6 @@ function App() {
   // pick the most common tag
   let bestTag = null;
   let maxCount = 0;
-
   for (let tag in tagMap) {
     if (tagMap[tag].length > maxCount) {
       bestTag = tag;
@@ -115,14 +134,14 @@ function App() {
 
       <Banner book={bannerBook || {}} />
 
-      <Row title="Recommended for You" books={filteredRecommended} />
+      <Row title="Recommended for You" books={filteredRecommended} onLike = {toggleFavorite} />
       {tagRow.books.length > 0 && (
-      <Row title={tagRow.title} books={tagRow.books} />
+      <Row title={tagRow.title} books={tagRow.books} onLike = {toggleFavorite} />
       )}
 
-      <Row title="Trending Now" books={cleanTrending} />
+      <Row title="Trending Now" books={cleanTrending} onLike = {toggleFavorite} />
 
-      <Row title="Discover Something New" books={randomTopPicks} />
+      <Row title="Discover Something New" books={randomTopPicks} onLike = {toggleFavorite} />
     </div>
   );
 }

@@ -181,7 +181,7 @@ def hybrid_recommend(book_name):
             "author": book_data["authors"],
             "rating": book_data["average_rating"],
             "image": book_data.get("cover_url"),
-            "reason": shared_tags if shared_tags else ["popular among similar users"]
+            "reason": ", ".join(shared_tags) if shared_tags else "popular among similar users"
         })
 
     return results

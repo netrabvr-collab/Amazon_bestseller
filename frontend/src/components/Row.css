@@ -294,3 +294,20 @@
 }
 
 .poster-container:hover::after { opacity: 1; }
+
+.like-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: 0.2s;
+}
+
+.like-btn:hover {
+  transform: scale(1.2);
+  opacity: 1;
+}
